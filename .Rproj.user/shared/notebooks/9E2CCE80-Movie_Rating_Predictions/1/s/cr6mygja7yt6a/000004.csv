@@ -1,0 +1,7 @@
+"0","edx %>%"
+"0","  group_by(userId) %>% "
+"0","  summarize(Average = mean(rating)) %>%"
+"0","  ggplot(aes(x = Average)) + "
+"0","  geom_histogram(bins = 30, color = ""black"", fill = ""darkgreen"", alpha = 0.75) + "
+"0","  ggtitle(""Grouping Users by Average Rating"") +"
+"0","  xlab(""Average Rating"") + ylab(""Number of Users"")"

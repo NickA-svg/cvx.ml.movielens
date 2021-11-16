@@ -1,0 +1,13 @@
+"0","opts_tune = r$tune(train_set,                                   
+                   opts = list(dim = c(10, 20, 30),        
+                               costp_l2 = c(0.01, 0.1),         
+                               costq_l2 = c(0.01, 0.1),         
+                               costp_l1 = 0,                    
+                               costq_l1 = 0,                    
+                               lrate    = c(0.01, 0.1),         
+                               nthread  = 4,                    
+                               niter    = 10,                   
+                               verbose  = TRUE))                
+"
+"2","libc++abi: __cxa_guard_acquire detected recursive initialization
+"

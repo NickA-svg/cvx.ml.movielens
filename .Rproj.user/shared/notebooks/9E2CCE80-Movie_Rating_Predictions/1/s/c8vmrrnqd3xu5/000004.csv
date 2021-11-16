@@ -1,0 +1,8 @@
+"0","edx %>%"
+"0","  group_by(userId) %>% "
+"0","  summarize(n = n()) %>%"
+"0","  ggplot(aes(n)) + "
+"0","  geom_histogram(bins = 30, color = ""black"", fill = ""darkgreen"", alpha = 0.75) + "
+"0","  scale_x_log10() +"
+"0","  ggtitle(""Grouping Users by Number of Ratings"") +"
+"0","  xlab(""Number of Ratings"") + ylab(""Number of Users"")"

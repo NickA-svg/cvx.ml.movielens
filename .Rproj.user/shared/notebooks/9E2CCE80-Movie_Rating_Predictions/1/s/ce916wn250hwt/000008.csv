@@ -1,0 +1,5 @@
+"0","result <- "
+"0","  result %>%"
+"0","  add_row(""Method"" = ""Regularized Model"", ""RMSE"" = reg_rmse_validation)"
+"0",""
+"0","result"

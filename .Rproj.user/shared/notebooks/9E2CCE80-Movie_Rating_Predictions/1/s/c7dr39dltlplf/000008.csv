@@ -1,0 +1,6 @@
+"0","train %>% "
+"0","  group_by(movieId, title) %>%"
+"0","  summarize(No_Ratings = n(), Average = mean(rating),"
+"0","            .groups = 'drop') %>%"
+"0","  arrange(desc(No_Ratings)) %>%"
+"0","  slice_head(n = 10)"

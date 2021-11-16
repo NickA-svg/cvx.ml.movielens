@@ -1,0 +1,6 @@
+"0","train %>% group_by(movieId) %>% "
+"0","  summarize(Average = mean(rating)) %>%"
+"0","  ggplot(aes(x = Average)) + "
+"0","  geom_histogram(bins = 30, color = ""black"", fill = ""blue"", alpha = 0.75) + "
+"0","  ggtitle(""Grouping Movies by Average Rating"") +"
+"0","  xlab(""Average Rating"") + ylab(""Number of Movies"")"

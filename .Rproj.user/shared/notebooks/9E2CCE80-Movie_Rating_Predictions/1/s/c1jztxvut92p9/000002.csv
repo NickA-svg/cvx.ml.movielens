@@ -1,0 +1,6 @@
+"0","edx %>%"
+"0","  ggplot(aes(rating, y = ..prop..)) +"
+"0","  geom_bar(color = ""black"", fill = ""blue"") +"
+"0","  labs(x = ""Ratings"", y = ""Relative Frequency"") +"
+"0","  scale_x_continuous(breaks = c(0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5)) +"
+"0","  theme_bw()"

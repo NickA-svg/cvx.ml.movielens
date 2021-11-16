@@ -1,0 +1,5 @@
+"0","fit_lm <- caret::train(rating ~ movieId,
+                       data=edx,
+                       method=""lm"")
+"
+"2","non-uniform 'Rounding' sampler used"

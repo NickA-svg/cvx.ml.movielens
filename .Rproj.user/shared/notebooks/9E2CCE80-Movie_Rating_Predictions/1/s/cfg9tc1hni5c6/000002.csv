@@ -1,0 +1,8 @@
+"0","users <- sample(unique(train$userId), 100)"
+"0","rafalib::mypar()"
+"0","train %>% filter(userId %in% users) %>% "
+"0","  select(userId, movieId, rating) %>%"
+"0","  mutate(rating = 1) %>%"
+"0","  spread(movieId, rating) %>% select(sample(ncol(.), 100)) %>% "
+"0","  as.matrix() %>% t(.) %>%"
+"0","  image(1:100, 1:100,. , xlab=""Movies"", ylab=""Users"")"

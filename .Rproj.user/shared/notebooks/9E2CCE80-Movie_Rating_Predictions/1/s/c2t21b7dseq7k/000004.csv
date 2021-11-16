@@ -1,0 +1,5 @@
+"0","edx %>% "
+"0","  group_by(userId) %>%"
+"0","  summarize(No_Ratings = n(), Average = mean(rating)) %>%"
+"0","  arrange(desc(No_Ratings)) %>%"
+"0","  top_n(n = 10, No_Ratings)"

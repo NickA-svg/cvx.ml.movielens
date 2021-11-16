@@ -1,0 +1,15 @@
+"0","library(recosystem)"
+"0","set.seed(1)"
+"0","train_reco <- with(train, data_memory(user_index = userId, item_index = movieId, rating = rating))"
+"0","test_reco <- with(test, data_memory(user_index = userId, item_index = movieId, rating = rating))"
+"0","r <- Reco()"
+"0",""
+"0","para_reco <- r$tune(train_reco, opts = list(dim = c(20, 30),"
+"0","                                            costp_l2 = c(0.01, 0.1),"
+"0","                                            costq_l2 = c(0.01, 0.1),"
+"0","                                            lrate = c(0.01, 0.1),"
+"0","                                            nthread = 4,"
+"0","                                            niter = 10))"
+"2","Error in r$tune(train_reco, opts = list(dim = c(20, 30), costp_l2 = c(0.01,  : 
+  function 'Rcpp_precious_remove' not provided by package 'Rcpp'
+"

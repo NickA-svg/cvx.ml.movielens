@@ -1,0 +1,7 @@
+"0","k_grid = data.frame(k=seq(3,9,2))"
+"0","fit_knn <- caret::train(rating ~ .,"
+"0","                    data = train,"
+"0","                    method=""knn"","
+"0","                    tuneGrid=k_grid"
+"0","                    )"
+"2","non-uniform 'Rounding' sampler used"

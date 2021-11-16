@@ -1,0 +1,4 @@
+"0","fit <- caret::train(rating ~ .,"
+"0","                    data = train,"
+"0","                    method=""lm"")"
+"2","non-uniform 'Rounding' sampler used"
