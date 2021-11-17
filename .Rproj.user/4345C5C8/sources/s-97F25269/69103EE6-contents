@@ -275,7 +275,6 @@ edx %>%
 ### Initial Prediction
 ```{r average, echo=FALSE}
 mu <- mean(train$rating)
-paste("The average movie rating is", mu)
 ```
 Employing the simple approximation that a movie will be rated with the average movie rating, `r mu`, generates a model that defaults to this value for every prediction. This model can be represented by the equation $\hat{Y}_{u,i} = \mu + \epsilon_{u,i}$, where $\epsilon_{u,i}$ is th error distribution. This model generates the following RMSE evaluation:
 
