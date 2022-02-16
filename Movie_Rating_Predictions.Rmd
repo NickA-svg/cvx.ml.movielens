@@ -8,7 +8,7 @@ sansfont: Arial
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(fig.align = 'center', fig.width=15, knitr.table.format = "latex",fig.pos = "!H", out.extra = "",out.width = "90%")
+knitr::opts_chunk$set(fig.align = 'center', fig.width=15, knitr.table.format = "latex",fig.pos = "!H", out.extra = "",out.width = "90%",options(digits = 3))
 if(!require(tidyverse)) install.packages("tidyverse", repos = "http://cran.us.r-project.org")
 if(!require(caret)) install.packages("caret", repos = "http://cran.us.r-project.org")
 if(!require(lubridate)) install.packages("lubridate", repos = "http://cran.us.r-project.org")
@@ -33,7 +33,7 @@ This research project investigates the creation of a recommendation system for m
 
 
 ## Introduction
-The aim of this of this research capstone is to generate a movie recommendation system, using the [MovieLens](https://movielens.org/) dataset. The data used herein is produced by a research lab from the University of Minnesota, GroupLens, whom have compiled a collection of millions of movie ratings. Specifically, for this project the 10M version is utilized. The project will explore the data and then will aim to create a model that given a user will predict the rating for a movie. To evaluate model performance the metric Root Mean Squared Error (RMSE) will be employed, which is determined by the square root of the residual sum of squares from comparing predictions $\hat{y}$ with observed outcomes $y$ for each user $u$ and each item (movie) $i$:
+The aim of this of this research capstone is to generate a movie recommendation system, using the [MovieLens](https://movielens.org/) dataset. The data used herein is produced by a research lab from the University of Minnesota, GroupLens, whom have compiled a collection of millions of movie ratings. Specifically, for this project the 10M version is utilized. The project will explore the data and then will aim to create a model that given a user will predict the rating for a movie. To evaluate model performance the metric Root Mean Squared Error (RMSE) will be employed, which is determined by the square root of the residual sum of squares from comparing predictions $\hat{y}$ with observed outcomes $y$ for each user $u$ and each item (movie) $i$, S. Glen (2020) :
 
 $\sqrt{\frac{1}{N}\sum_{u,i=1}^{N} (y_{u,i} - \hat{y}_{u,i})}$
 
@@ -170,7 +170,9 @@ edx %>%
   summarize(No_Ratings = n(), Average = mean(rating),
             .groups = 'drop') %>%
   arrange(desc(No_Ratings)) %>%
-  slice_head(n = 10) %>% kbl(.,booktabs = T) %>%   kable_styling(latex_options = c("striped","hold_position"))
+  slice_head(n = 10) %>%
+  kbl(.,booktabs = T) %>%
+  kable_styling(latex_options = c("striped","hold_position"))
 ```
 The average rating distribution for movies is also approximately normal, with the average movie rating at `r edx$rating %>% mean()`. 
 ```{r ave_movie_rating, echo=FALSE}
@@ -470,7 +472,7 @@ result %>% kbl(.,booktabs = T) %>%   kable_styling(latex_options = c("striped","
 
 
 ## Model Tuning - Regularization
-As previously described some users have only rated very few films, and some movies have very few ratings leading to small sample sizes for these instances. Statistically speaking this introduces a larger estimated error. The user and movie effect terms, $b_u and b_i$, can strongly influence predictions made by the model and error in these will cause the model performance to deteriorate. To combat this a technique known as regularization can be employed. This introduces a tuning parameter, $\lambda$, that can penalize distortions to these terms in essence by penalizing small sample sizes. For example the addition of $\lambda$ modifies the movie effect term $b_i$ to the following:
+As previously described some users have only rated very few films, and some movies have very few ratings leading to small sample sizes for these instances. Statistically speaking this introduces a larger estimated error. The user and movie effect terms, $b_u and b_i$, can strongly influence predictions made by the model and error in these will cause the model performance to deteriorate. To combat this a technique known as regularization can be employed, R. Irizarry (2022). This introduces a tuning parameter, $\lambda$, that can penalize distortions to these terms in essence by penalizing small sample sizes. For example the addition of $\lambda$ modifies the movie effect term $b_i$ to the following:
 
 $\hat{b}_i = \frac{1}{n_i + \lambda}\sum_{u=1}^{n_i}{(y_{u,i} - \hat{\mu})}$
 
@@ -651,9 +653,9 @@ result %>% kbl(.,booktabs = T) %>%   kable_styling(latex_options = c("striped","
 
 
 ## Matrix Factorisation
-One of the most widely used tools in recommendation systems is matrix factorisation, and was popularized in industrial applications after emerging as the winner from the Netflix prize. This method aims to fill in the rating matrix grid shown earlier by representing this large sparse matrix by the product two lower dimension matrices. The R library [recosystem](https://www.r-bloggers.com/2016/07/recosystem-recommender-system-using-parallel-matrix-factorization/) provides a method to decompose the matrix into these lower dimensions and then allow predictions to be made.
+One of the most widely used tools in recommendation systems is matrix factorisation, and was popularized in industrial applications after emerging as the winner from the Netflix prize. This method aims to fill in the rating matrix grid shown earlier by representing this large sparse matrix by the product two lower dimension matrices. The R library [recosystem](https://www.r-bloggers.com/2016/07/recosystem-recommender-system-using-parallel-matrix-factorization/) provides a method to decompose the matrix into these lower dimensions and then allow predictions to be made, Yixuan (2016).
 
-To demonstrate matrix factorization, the following code breaks down the steps the recosystem library is performing. It is worth noting there are many methods employed to solve the dimensionality reduction of the matrix and the example below is for illustrative purposes and may not replicate the method employed by the recosystem library. This example is also only run on a sample of 10 users and 10 movies only as this operation is computational expensive on large datasets and to achieve the results that the library delivers requires the use of C programming languages to handle memory.
+To demonstrate matrix factorization, the following code breaks down the steps the recosystem library is performing. It is worth noting there are many methods employed to solve the dimensionality reduction of the matrix and the example below is for illustrative purposes and may not replicate the method employed by the recosystem library, J. Brownlee (2018). This example is also only run on a sample of 10 users and 10 movies only as this operation is computational expensive on large datasets and to achieve the results that the library delivers requires the use of C programming languages to handle memory.
 
 ```{r mf_func, echo=FALSE}
 matrix_fact <-
@@ -664,7 +666,7 @@ matrix_fact <-
     #K latent features
     #steps = iterations
     #alpha = learning rate
-    #beta = regularization param
+    #beta = regularization parameter
     Q = t(Q)
     for (step in 1:steps){
       for (i in 1:nrow(R)){
@@ -788,7 +790,7 @@ result %>% kbl(.,booktabs = T) %>% kable_styling(latex_options = c("striped","ho
 ```
 
 Heatmap to show how the rating matrix has now been populated with predictions:
-```{r mf_2, echo=FALSE, fig.width=7}
+```{r mf_2, echo=FALSE, fig.width=5,fig.height=5}
 user = 1:20
 movie = 1:20
 pred = expand.grid(user = user, movie = movie)
@@ -797,7 +799,7 @@ pred$rating = r$predict(test_set, out_memory())
 
 library(ggplot2)
 ggplot(pred, aes(x = movie, y = user, fill = rating)) +
-    geom_raster() +
+    geom_tile() +
     scale_fill_gradient("Rating", low = "#d6e685", high = "#1e6823") +
     xlab("Movie ID") + ylab("User ID") +
     coord_fixed() +
@@ -817,4 +819,13 @@ There are many challenges that affect recommendation systems, one of which has b
 
 Furthermore, recommendation systems face ethical challenges and content based challenges were companies need to be careful of the recommendations made. For example the content of the item may not be suitable for the age of the user and filtering of their respective item libraries may be required. Diversity of recommendations is also another issue, were if a recommendation system keeps recommending very similar types of movies a user my never see new types of content. Here a potential solution is to ensure that in a top n recommendation a handful of the recommendations are diverse and are items unlikely to be seen. In a similar vein the preferences of a user may change with time, something they were interested in a year ago may not interest them today. Again solutions to this may involve the application of filtering the user catalogs to only look at recent recommendations and drop historical ones. 
 
-It is also worth noting that user/item databases can get very large very quickly and the concepts and application of Big Data may need to be applied to run and generate models. The computing power of one laptop/computer may be insufficient to compute the matrix factorization of a dataset of the likes of Amazon or Netflix. 
+It is also worth noting that user/item databases can get very large very quickly and the concepts and application of Big Data may need to be applied to run and generate models. The computing power of one laptop/computer may be insufficient to compute the matrix factorization of a dataset of the likes of Amazon or Netflix, C. Kasula (2020). 
+
+
+## References
+1. GroupLens, MovieLens. Available at: https://grouplens.org/datasets/movielens/ (Accessed on the 10 November 2021)
+2. Glen Stephanie. RMSE: Root Mean Square Error. Available at: https://www.statisticshowto.com/probability-and-statistics/regression-analysis/rmse-root-mean-square-error/ (Accessed on the 10 November 2021)
+3. Rafael A. Irizarry. (2022). Introduction to Data Science: Data Analysis and Prediction Algorithms with R. CRC Press.
+4. Yixuan. recosystem: Recommender System Using Parallel Matrix Factorization. (2016). Available at: https://www.r-bloggers.com/2016/07/recosystem-recommender-system-using-parallel-matrix-factorization/ (Accessed on the 28 November 2021)
+5. J. Brownlee. A Gentle Introduction to Matrix Factorization for Machine Learning. 2018. Avaliable at: https://machinelearningmastery.com/introduction-to-matrix-decompositions-for-machine-learning/ (Accessed on the 28 November 2021)
+6. C. Kasula. Netflix Recommender System — A Big Data Case Study. Available at: https://towardsdatascience.com/netflix-recommender-system-a-big-data-case-study-19cfa6d56ff5 (Accessed on 3 January 2022)

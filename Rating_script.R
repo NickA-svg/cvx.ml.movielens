@@ -30,18 +30,18 @@ movies <- as.data.frame(movies) %>% mutate(movieId = as.numeric(movieId),
 
 movielens <- left_join(ratings, movies, by = "movieId")
 
-# Validation set will be 10% of MovieLens data
+# Validation set will be 10% of MovieLens data ----
 set.seed(1)
 test_index <- createDataPartition(y = movielens$rating, times = 1, p = 0.1, list = FALSE)
 edx <- movielens[-test_index,]
 temp <- movielens[test_index,]
 
-# Make sure userId and movieId in validation set are also in edx set
+# Make sure userId and movieId in validation set are also in edx set ----
 validation <- temp %>%
   semi_join(edx, by = "movieId") %>%
   semi_join(edx, by = "userId")
 
-# Add rows removed from validation set back into edx set
+# Add rows removed from validation set back into edx set ----
 removed <- anti_join(temp, validation)
 edx <- rbind(edx, removed)
 
@@ -52,12 +52,12 @@ test_index <- createDataPartition(y = edx$rating, times = 1, p = 0.2, list = FAL
 train <- edx[-test_index,]
 temp <- edx[test_index,]
 
-# Make sure userId and movieId in  test set are also in train set
+# Make sure userId and movieId in  test set are also in train set ----
 test <- temp %>%
   semi_join(train, by = "movieId") %>%
   semi_join(train, by = "userId")
 
-# Add rows removed from testset back into train set
+# Add rows removed from testset back into train set ----
 removed <- anti_join(temp, test)
 train <- rbind(train, removed)
 
@@ -76,6 +76,7 @@ train %>% filter(userId %in% users) %>%
 abline(h=0:100+0.5, v=0:100+0.5, col = "grey")
 title("Ratings")
 
+#Create plots ----
 edx %>%
   group_by(title) %>%
   summarize(count = n()) %>%
@@ -185,6 +186,7 @@ edx %>%
   ggtitle("Genre Effect") +
   xlab("Genres") + ylab("Rating")
 
+#RMSE Method 1 ----
 mu <- mean(train$rating)
 
 naive_rmse <- RMSE(test$rating,mu)
@@ -196,6 +198,7 @@ movie_avg <-
   summarise(b_i = mean(rating - mu),
             .groups='drop')
 
+#RMSE Method 2 ----
 model_2 <-
   mu + test %>%
   left_join(movie_avg,by="movieId") %>%
@@ -209,10 +212,12 @@ result <- bind_rows(result,
                       RMSE = movies_rmse)
 )
 
+#RMSE Method 3 ----
 user_avg <- train %>%
   left_join(movie_avg, by='movieId') %>%
   group_by(userId) %>%
   summarize(b_u = mean(rating - mu - b_i))
+
 
 model_3 <- test %>%
   left_join(movie_avg, by='movieId') %>%
@@ -226,6 +231,8 @@ result <- bind_rows(result,
                       Method = "Movie + User Effects",
                       RMSE = movie_user_rmse)
 )
+
+#RMSE Method 4 ----
 
 genre_avg <- train %>%
   left_join(movie_avg, by='movieId') %>%
@@ -247,6 +254,7 @@ result <- bind_rows(result,
                       RMSE = movie_user_genre_rmse)
 )
 
+#RMSE Method 5 ----
 train <- train %>% mutate(Year = year(as_datetime(timestamp)))
 
 test <- test %>% mutate(Year = year(as_datetime(timestamp)))
@@ -328,7 +336,7 @@ edx %>%
   select(title, b_i, n) %>%
   slice(1:10)
 
-
+# Regularisation ----
 lambda <- 1
 movie_reg <- edx %>%
   group_by(movieId) %>%
@@ -381,7 +389,7 @@ reg_rmses_focused <- sapply(ls_focused, function(l) {
   RMSE(edx$rating, pred_movie_user_genre_year_reg)
 })
 
-# pick the final lambda
+  # pick the final lambda
 plot(ls_focused, reg_rmses_focused)
 
 l_final <- ls_focused[which.min(reg_rmses_focused)]
@@ -474,6 +482,7 @@ result <-
 
 result
 
+#MF Method ----
 matrix_fact <-
   function(R,P,Q,K, steps=5000,alpha=0.002,beta=0.02){
     #R rating matrix
